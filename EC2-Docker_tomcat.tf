@@ -10,6 +10,7 @@ resource "aws_instance" "docker" {
 }
 }
 
+
 resource "aws_instance" "Tomcat" {
   ami           = var.ami
   instance_type = var.instance_type
@@ -20,5 +21,17 @@ resource "aws_instance" "Tomcat" {
 
   tags = {
     Name = "Tomcat-terraform"
+  }
+}
+resource "aws_instance" "jenkins-terraform" {
+  ami           = var.ami
+  instance_type = var.instance_type
+  key_name = "Devops"
+  subnet_id = aws_subnet.Tomcat-Subnet1.id
+  associate_public_ip_address = true
+  user_data = file("jenkins.sh")
+
+  tags = {
+    Name = "Jenkins-terraform"
   }
 }
